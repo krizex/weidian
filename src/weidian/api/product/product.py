@@ -1,32 +1,32 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from weidian.api.base.api_base import ApiCallBase
-from weidian.token.token_mgr import TokenManager
 
 __author__ = 'David Qian'
 
 """
-Created on 06/04/2016
+Created on 06/05/2016
 @author: David Qian
 
 """
 
 
-class Payment(ApiCallBase):
-    _method = 'vdian.f2f.qrcode.get'
+class Product(ApiCallBase):
+    _method = 'vdian.item.list.get'
 
     def __init__(self):
-        super(Payment, self).__init__()
+        super(Product, self).__init__()
 
-    def get_qr_code(self):
+    def get_all_products(self):
         business_params = {
-
+            'page_num': 1,
+            'orderby': 1,
+            'page_size': 30,
         }
 
         r = self._invoke(business_params)
         print r
 
-
 if __name__ == '__main__':
-    payment = Payment()
-    payment.get_qr_code()
+    p = Product()
+    p.get_all_products()
