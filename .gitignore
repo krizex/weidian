@@ -2,3 +2,4 @@
 *.pyc
 */nohup.out
 src/weidian/token/my_token.py
+src/weidian/token/token_file
