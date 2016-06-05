@@ -4,7 +4,7 @@ import json
 
 import requests
 
-from weidian.common.public import API_URL
+from weidian.common.public import API_URL, TOKEN_ERR_CODE
 from weidian.token.token_mgr import TokenManager
 
 __author__ = 'David Qian'
@@ -25,8 +25,8 @@ def pretty_print_POST(req):
     this function because it is programmed to be pretty
     printed and may differ from the actual request.
     """
-    print('{}\n{}\n{}\n\n{}'.format(
-        '-----------START-----------',
+    print '-----------START-----------'
+    print('{}\n{}\n\n{}'.format(
         req.method + ' ' + req.url,
         '\n'.join('{}: {}'.format(k, v) for k, v in req.headers.items()),
         req.body,
@@ -41,9 +41,10 @@ class ApiCallBase(object):
     _format = 'json'
 
     def __init__(self):
-        self._update_token()
+        self._access_token = TokenManager().get_token()
 
     def _update_token(self):
+        TokenManager().update_token()
         self._access_token = TokenManager().get_token()
 
     def _get_public_params(self):
@@ -57,9 +58,24 @@ class ApiCallBase(object):
         return d
 
     def _invoke(self, business_params):
+        req = self._build_request(business_params)
+        rep = requests.Session().send(req)
+        status_code = rep.json()['status']['status_code']
+        if status_code not in TOKEN_ERR_CODE:
+            return rep.json()
+
+        # token error, refresh it and retry
+        print 'token error, refresh it and retry'
+        self._update_token()
+        req = self._build_request(business_params)
+        rep = requests.Session().send(req)
+        return rep.json()
+
+    def _build_request(self, business_params):
         headers = {
             'Content-Type': 'application/x-www-form-urlencoded',
         }
+
         payload = {
             'param': business_params,
             'public': self._get_public_params(),
@@ -70,8 +86,7 @@ class ApiCallBase(object):
             params.append('%s=%s' % (k, json.dumps(v)))
 
         req = requests.Request('POST', API_URL, headers=headers, data='&'.join(params))
-        prepped = req.prepare()
-        pretty_print_POST(prepped)
-        rep = requests.Session().send(prepped)
-        return rep.json()
+        prepped_req = req.prepare()
+        pretty_print_POST(prepped_req)
+        return prepped_req
 

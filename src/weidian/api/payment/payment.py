@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from weidian.api.base.api_base import ApiCallBase
-from weidian.token.token_mgr import TokenManager
 
 __author__ = 'David Qian'
 

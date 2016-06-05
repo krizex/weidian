@@ -12,3 +12,5 @@ Created on 06/04/2016
 VDIAN_BASE_URL = 'https://api.vdian.com'
 TOKEN_URL = VDIAN_BASE_URL + '/token'
 API_URL = VDIAN_BASE_URL + '/api'
+
+TOKEN_ERR_CODE = (10013, 10016, 10023)
