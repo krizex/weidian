@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import json
+from urllib import quote
 
 import requests
 
@@ -83,7 +84,7 @@ class ApiCallBase(object):
 
         params = []
         for k, v in payload.iteritems():
-            params.append('%s=%s' % (k, json.dumps(v)))
+            params.append('%s=%s' % (k, quote(json.dumps(v))))
 
         req = requests.Request('POST', API_URL, headers=headers, data='&'.join(params))
         prepped_req = req.prepare()
