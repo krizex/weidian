@@ -7,6 +7,7 @@ import requests
 import time
 
 from weidian.common.public import TOKEN_URL
+from weidian.token.my_token import MY_APPKEY, MY_SECRET
 from weidian.utils.singleton import Singleton
 
 __author__ = 'David Qian'
@@ -18,8 +19,8 @@ Created on 06/04/2016
 """
 
 
-APPKEY = '658401'
-SECRET = '5779e979d8287c2a96dfec35640eb22c'
+APPKEY = MY_APPKEY
+SECRET = MY_SECRET
 
 
 @Singleton
