@@ -1,4 +1,4 @@
 .idea
 *.pyc
 */nohup.out
-./src/weidiant/oken/my_token.py
+src/weidian/token/my_token.py
